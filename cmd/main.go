@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -148,6 +149,8 @@ func main() {
 
 		WriteJSON(w, response)
 	})
+
+	fmt.Println("Server running...")
 
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		panic(err)
