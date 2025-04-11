@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/mcp-server-samehadaku/external"
+	"github.com/radenrishwan/samehadaku-api/external"
 )
 
 var titlePrefix = "Nonton Anime "

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/radenrishwan/mcp-server-samehadaku/external"
+	"github.com/radenrishwan/samehadaku-api/external"
 )
 
 func Fetch(day string) ([]JadwalRilis, error) {

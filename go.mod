@@ -1,4 +1,4 @@
-module github.com/radenrishwan/mcp-server-samehadaku
+module github.com/radenrishwan/samehadaku-api
 
 go 1.23.4
 

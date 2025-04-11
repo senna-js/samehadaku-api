@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/mcp-server-samehadaku/external"
+	"github.com/radenrishwan/samehadaku-api/external"
 )
 
 func Fetch(seperate bool) (DaftarAnime, error) {

@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"strconv"
 
-	samehadakuanimeterbaru "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/anime-terbaru"
-	samehadakudaftaranime "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/daftar-anime"
-	samehadakudetail "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/detail"
-	samehadakuepisode "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/episode"
-	samehadakuhome "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/home"
-	samehadakujadwalrilis "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/jadwal-rilis"
-	samehadakusearch "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/search"
+	samehadakuanimeterbaru "github.com/radenrishwan/samehadaku-api/external/pkg/anime-terbaru"
+	samehadakudaftaranime "github.com/radenrishwan/samehadaku-api/external/pkg/daftar-anime"
+	samehadakudetail "github.com/radenrishwan/samehadaku-api/external/pkg/detail"
+	samehadakuepisode "github.com/radenrishwan/samehadaku-api/external/pkg/episode"
+	samehadakuhome "github.com/radenrishwan/samehadaku-api/external/pkg/home"
+	samehadakujadwalrilis "github.com/radenrishwan/samehadaku-api/external/pkg/jadwal-rilis"
+	samehadakusearch "github.com/radenrishwan/samehadaku-api/external/pkg/search"
 )
 
 func main() {
