@@ -8,7 +8,8 @@ type Anime struct {
 	Episodes  []Episode `json:"episodes"`
 	Detail    Detail    `json:"detail"`
 	// url to newest or latest episode
-	Href string `json:"href"`
+	Href        string `json:"href"`
+	EpisodeSlug string `json:"episode_slug"`
 }
 
 type Genre struct {
@@ -17,10 +18,11 @@ type Genre struct {
 }
 
 type Episode struct {
-	Index      int    `json:"index"`
-	Title      string `json:"title"`
-	ReleasedOn string `json:"released_on"`
-	Href       string `json:"href"`
+	Index       int    `json:"index"`
+	Title       string `json:"title"`
+	ReleasedOn  string `json:"released_on"`
+	Href        string `json:"href"`
+	EpisodeSlug string `json:"episode_slug"`
 }
 
 type Detail struct {

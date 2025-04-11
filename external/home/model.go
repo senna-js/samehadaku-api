@@ -14,6 +14,7 @@ type AnimeCard struct {
 	PostedBy   string `json:"posted_by"`
 	ReleasedOn string `json:"released_on"`
 	Href       string `json:"href"`
+	Slug       string `json:"slug"`
 }
 
 type ProjectMovieCard struct {
@@ -22,6 +23,7 @@ type ProjectMovieCard struct {
 	Genres     []Genre `json:"genres"`
 	ReleasedOn string  `json:"released_on"`
 	Href       string  `json:"href"`
+	Slug       string  `json:"slug"`
 }
 
 type Genre struct {
@@ -36,4 +38,5 @@ type DonghuaDanFilm struct {
 	Episode   string `json:"episode"`
 	Rating    string `json:"rating"`
 	Href      string `json:"href"`
+	Slug      string `json:"slug"`
 }

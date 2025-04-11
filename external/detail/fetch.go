@@ -36,18 +36,18 @@ func Fetch(slug string) (Anime, error) {
 	anime.Thumbnail = doc.Find("#infoarea > div > div.infoanime.widget_senction > div.thumb > img").AttrOr("src", "")
 	anime.Synopsis = doc.Find("#infoarea > div > div.infoanime.widget_senction > div.infox > div.desc > div > p").Text()
 
-	// TODO: fix later, the genre are incorrect
 	genres := []Genre{}
-	doc.Find("#infoarea > div > div.infoanime.widget_senction > div.infox > div.genre-info").Each(func(i int, s *goquery.Selection) {
+	doc.Find("#infoarea > div > div.infoanime.widget_senction > div.infox > div.genre-info > a").Each(func(i int, s *goquery.Selection) {
 		genres = append(genres, Genre{
-			Title: s.Find("a").Text(),
-			Href:  s.Find("a").AttrOr("href", ""),
+			Title: s.Text(),
+			Href:  s.AttrOr("href", ""),
 		})
 	})
 
 	anime.Genres = genres
 
 	anime.Href = doc.Find("#infoarea > div > div:nth-child(26) > a").AttrOr("href", "")
+	anime.EpisodeSlug = external.ExtractSlug(anime.Href)
 
 	episodes := []Episode{}
 	doc.Find("#infoarea > div > div.whites.lsteps.widget_senction > div.lstepsiode.listeps > ul > li").Each(func(i int, s *goquery.Selection) {
@@ -60,43 +60,52 @@ func Fetch(slug string) (Anime, error) {
 		}
 
 		episodes = append(episodes, Episode{
-			Index:      index,
-			Title:      right.Find("span.lchx > a").Text(),
-			ReleasedOn: right.Find("span.date").Text(),
-			Href:       right.Find("span.lchx > a").AttrOr("href", ""),
+			Index:       index,
+			Title:       right.Find("span.lchx > a").Text(),
+			ReleasedOn:  right.Find("span.date").Text(),
+			Href:        right.Find("span.lchx > a").AttrOr("href", ""),
+			EpisodeSlug: external.ExtractSlug(right.Find("span.lchx > a").AttrOr("href", "")),
 		})
 	})
 
 	slices.Reverse(episodes)
 	anime.Episodes = episodes
 
-	// TODO: fix later, the index is still wrong
 	doc.Find("#infoarea > div > div.whites.lsteps.widget_senction > div.anim-senct > div.right-senc.widget_senction > div > div > div > span").Each(func(i int, s *goquery.Selection) {
 		switch i {
 		case 0:
-			anime.Detail.Japanese = s.Text()
+			anime.Detail.Japanese = extractDetailText(s.Text())
 		case 1:
-			anime.Detail.Status = s.Text()
+			anime.Detail.Synonyms = extractDetailText(s.Text())
 		case 2:
-			anime.Detail.Source = s.Text()
+			anime.Detail.Status = extractDetailText(s.Text())
 		case 3:
-			anime.Detail.TotalEpisode = s.Text()
+			anime.Detail.Type = extractDetailText(s.Text())
 		case 4:
-			anime.Detail.Studio = s.Text()
+			anime.Detail.Source = extractDetailText(s.Text())
 		case 5:
-			anime.Detail.Released = s.Text()
+			anime.Detail.Duration = extractDetailText(s.Text())
 		case 6:
-			anime.Detail.Synonyms = s.Text()
+			anime.Detail.TotalEpisode = extractDetailText(s.Text())
 		case 7:
-			anime.Detail.Type = s.Text()
+			anime.Detail.Season = extractDetailText(s.Text())
 		case 8:
-			anime.Detail.Duration = s.Text()
+			anime.Detail.Studio = extractDetailText(s.Text())
 		case 9:
-			anime.Detail.Season = s.Text()
+			anime.Detail.Producers = extractDetailText(s.Text())
 		case 10:
-			anime.Detail.Producers = s.Text()
+			anime.Detail.Released = extractDetailText(s.Text())
 		}
 	})
 
 	return anime, nil
+}
+
+func extractDetailText(text string) string {
+	t := strings.Split(text, " ")
+	if len(t) < 2 && t[1] == "" {
+		return "-"
+	}
+
+	return t[1]
 }

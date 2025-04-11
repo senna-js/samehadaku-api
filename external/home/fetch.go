@@ -36,6 +36,7 @@ func Fetch() (Home, error) {
 			PostedBy:   dlta.Find("span:nth-child(3) > author").Text(),
 			ReleasedOn: dlta.Find("span:nth-child(4) > author").Text(),
 			Href:       dlta.Find("h2 > a").AttrOr("href", ""),
+			Slug:       external.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
 		})
 	})
 
@@ -59,6 +60,7 @@ func Fetch() (Home, error) {
 			Genres:     genres,
 			ReleasedOn: lftInfo.Find("span:nth-child(3)").Text(),
 			Href:       lftInfo.Find("h2 > a").AttrOr("href", ""),
+			Slug:       external.ExtractSlug(lftInfo.Find("h2 > a").AttrOr("href", "")),
 		})
 	})
 
@@ -77,6 +79,7 @@ func Fetch() (Home, error) {
 			PostedBy:   dlta.Find("span:nth-child(3) > author").Text(),
 			ReleasedOn: dlta.Find("span:nth-child(4) > author").Text(),
 			Href:       dlta.Find("h2 > a").AttrOr("href", ""),
+			Slug:       external.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
 		})
 	})
 
