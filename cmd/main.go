@@ -3,10 +3,15 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
-	samehadakudetail "github.com/radenrishwan/mcp-server-samehadaku/external/detail"
-	samehadakuepisode "github.com/radenrishwan/mcp-server-samehadaku/external/episode"
-	samehadakuhome "github.com/radenrishwan/mcp-server-samehadaku/external/home"
+	samehadakuanimeterbaru "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/anime-terbaru"
+	samehadakudaftaranime "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/daftar-anime"
+	samehadakudetail "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/detail"
+	samehadakuepisode "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/episode"
+	samehadakuhome "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/home"
+	samehadakujadwalrilis "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/jadwal-rilis"
+	samehadakusearch "github.com/radenrishwan/mcp-server-samehadaku/external/pkg/search"
 )
 
 func main() {
@@ -64,6 +69,81 @@ func main() {
 			}
 
 			response = result
+		}
+
+		WriteJSON(w, response)
+	})
+
+	mux.HandleFunc("GET "+prefix+"/anime-terbaru/{page}", func(w http.ResponseWriter, r *http.Request) {
+		page := r.PathValue("page")
+		if page == "" {
+			http.Error(w, "page is required", http.StatusBadRequest)
+			return
+		}
+
+		p, err := strconv.Atoi(page)
+		if err != nil {
+			p = -1
+		}
+
+		response, err := samehadakuanimeterbaru.Fetch(p)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		WriteJSON(w, response)
+	})
+
+	mux.HandleFunc("GET "+prefix+"/jadwal-rilis/{day}", func(w http.ResponseWriter, r *http.Request) {
+		day := r.PathValue("day")
+		if day == "" {
+			http.Error(w, "page is required", http.StatusBadRequest)
+			return
+		}
+
+		response, err := samehadakujadwalrilis.Fetch(day)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		WriteJSON(w, response)
+	})
+
+	mux.HandleFunc("GET "+prefix+"/daftar-anime", func(w http.ResponseWriter, r *http.Request) {
+		seperate := r.URL.Query().Get("seperate")
+
+		p, err := strconv.Atoi(seperate)
+		if err != nil {
+			p = -1
+		}
+
+		isSeperate := true
+		if p != 1 {
+			isSeperate = false
+		}
+
+		response, err := samehadakudaftaranime.Fetch(isSeperate)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		WriteJSON(w, response)
+	})
+
+	mux.HandleFunc("GET "+prefix+"/search-anime", func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query().Get("query")
+		if query == "" {
+			http.Error(w, "page is required", http.StatusBadRequest)
+			return
+		}
+
+		response, err := samehadakusearch.Fetch(query)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 
 		WriteJSON(w, response)
