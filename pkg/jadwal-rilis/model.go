@@ -1,6 +1,6 @@
 package samehadakujadwalrilis
 
-type JadwalRilis struct {
+type JadwalRilisResult struct {
 	Thumbnail string   `json:"thumbnail"`
 	Title     string   `json:"title"`
 	Type      string   `json:"type"`

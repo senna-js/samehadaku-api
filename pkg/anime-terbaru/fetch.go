@@ -5,29 +5,33 @@ import (
 	"strconv"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/samehadaku-api/external"
+	"github.com/radenrishwan/samehadaku-api/utility"
 )
 
-func Fetch(page int) (AnimeTerbaru, error) {
+type AnimeTerbaru struct {
+	BaseUrl string
+}
+
+func (self AnimeTerbaru) Fetch(page int) (AnimeTerbaruResult, error) {
 	if page < 0 {
-		return AnimeTerbaru{}, external.ErrNotFound
+		return AnimeTerbaruResult{}, utility.ErrNotFound
 	}
 
-	url := external.BASE_URL + "anime-terbaru/page/" + strconv.Itoa(page)
+	url := self.BaseUrl + "anime-terbaru/page/" + strconv.Itoa(page)
 
 	client := http.DefaultClient
 
 	resp, err := client.Get(url)
 	if err != nil {
-		return AnimeTerbaru{}, err
+		return AnimeTerbaruResult{}, err
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return AnimeTerbaru{}, err
+		return AnimeTerbaruResult{}, err
 	}
 
-	animeTerbaru := AnimeTerbaru{}
+	animeTerbaru := AnimeTerbaruResult{}
 
 	animes := []AnimeCard{}
 	doc.Find("#main > div.post-show > ul > li").Each(func(i int, s *goquery.Selection) {
@@ -41,7 +45,7 @@ func Fetch(page int) (AnimeTerbaru, error) {
 			PostedBy:   dlta.Find("span:nth-child(3) > author").Text(),
 			ReleasedOn: dlta.Find("span:nth-child(4) > author").Text(),
 			Href:       dlta.Find("h2 > a").AttrOr("href", ""),
-			Slug:       external.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
+			Slug:       utility.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
 		})
 	})
 

@@ -4,25 +4,29 @@ import (
 	"net/http"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/samehadaku-api/external"
+	"github.com/radenrishwan/samehadaku-api/utility"
 )
 
-func Fetch(seperate bool) (DaftarAnime, error) {
-	url := external.BASE_URL + "/daftar-anime-2/?list"
+type DaftarAnime struct {
+	BaseUrl string
+}
+
+func (self DaftarAnime) Fetch(seperate bool) (DaftarAnimeResult, error) {
+	url := self.BaseUrl + "/daftar-anime-2/?list"
 
 	client := http.DefaultClient
 
 	resp, err := client.Get(url)
 	if err != nil {
-		return DaftarAnime{}, err
+		return DaftarAnimeResult{}, err
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return DaftarAnime{}, err
+		return DaftarAnimeResult{}, err
 	}
 
-	daftarAnime := DaftarAnime{}
+	daftarAnime := DaftarAnimeResult{}
 
 	alphabets := []Alphabet{}
 	doc.Find("#main > div.listpst > div").Each(func(i int, s *goquery.Selection) {
@@ -35,7 +39,7 @@ func Fetch(seperate bool) (DaftarAnime, error) {
 
 			anime.Title = s.Text()
 			anime.Href = s.AttrOr("href", "")
-			anime.Slug = external.ExtractSlug(anime.Href)
+			anime.Slug = utility.ExtractSlug(anime.Href)
 
 			animes = append(animes, anime)
 		})

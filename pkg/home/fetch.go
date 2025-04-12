@@ -4,23 +4,27 @@ import (
 	"net/http"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/samehadaku-api/external"
+	"github.com/radenrishwan/samehadaku-api/utility"
 )
 
+type Home struct {
+	BaseUrl string
+}
+
 // fetch `homepage`
-func Fetch() (Home, error) {
-	url := external.BASE_URL
+func (self Home) Fetch() (HomeResult, error) {
+	url := self.BaseUrl
 
 	client := http.DefaultClient
 
 	resp, err := client.Get(url)
 	if err != nil {
-		return Home{}, err
+		return HomeResult{}, err
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return Home{}, err
+		return HomeResult{}, err
 	}
 
 	// find `anime terbaru`
@@ -36,7 +40,7 @@ func Fetch() (Home, error) {
 			PostedBy:   dlta.Find("span:nth-child(3) > author").Text(),
 			ReleasedOn: dlta.Find("span:nth-child(4) > author").Text(),
 			Href:       dlta.Find("h2 > a").AttrOr("href", ""),
-			Slug:       external.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
+			Slug:       utility.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
 		})
 	})
 
@@ -60,7 +64,7 @@ func Fetch() (Home, error) {
 			Genres:     genres,
 			ReleasedOn: lftInfo.Find("span:nth-child(3)").Text(),
 			Href:       lftInfo.Find("h2 > a").AttrOr("href", ""),
-			Slug:       external.ExtractSlug(lftInfo.Find("h2 > a").AttrOr("href", "")),
+			Slug:       utility.ExtractSlug(lftInfo.Find("h2 > a").AttrOr("href", "")),
 		})
 	})
 
@@ -79,11 +83,11 @@ func Fetch() (Home, error) {
 			PostedBy:   dlta.Find("span:nth-child(3) > author").Text(),
 			ReleasedOn: dlta.Find("span:nth-child(4) > author").Text(),
 			Href:       dlta.Find("h2 > a").AttrOr("href", ""),
-			Slug:       external.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
+			Slug:       utility.ExtractSlug(dlta.Find("h2 > a").AttrOr("href", "")),
 		})
 	})
 
-	return Home{
+	return HomeResult{
 		AnimeTerbaru: animeTerbaru,
 		ProjectMovie: projectMovie,
 		// DonghuaDanFilm: donghuaDanFilm,

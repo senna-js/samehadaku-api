@@ -1,5 +1,5 @@
 // this file contains function to get the stream iframe
-package external
+package utility
 
 import (
 	"io"

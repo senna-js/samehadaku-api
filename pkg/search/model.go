@@ -1,6 +1,6 @@
 package samehadakusearch
 
-type Search struct {
+type SearchResult struct {
 	Result []AnimeCard `json:"result"`
 }
 

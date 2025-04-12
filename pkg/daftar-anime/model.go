@@ -1,6 +1,6 @@
 package samehadakudaftaranime
 
-type DaftarAnime struct {
+type DaftarAnimeResult struct {
 	Alphabets []Alphabet `json:"alphabets,omitempty"`
 	Animes    []Anime    `json:"animes,omitempty"`
 }

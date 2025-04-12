@@ -7,37 +7,39 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/radenrishwan/samehadaku-api/external"
+	"github.com/radenrishwan/samehadaku-api/utility"
 )
 
-func Fetch(day string) ([]JadwalRilis, error) {
+type JadwalRilis struct {
+	BaseUrl string
+}
 
-	// https://samehadaku.mba/wp-json/custom/v1/all-schedule?perpage=20&day=wednesday&type=schtml
-	url := external.BASE_URL + fmt.Sprintf("wp-json/custom/v1/all-schedule?perpage=20&day=%s&type=schtml", day)
+func (self JadwalRilis) Fetch(day string) ([]JadwalRilisResult, error) {
+	url := self.BaseUrl + fmt.Sprintf("wp-json/custom/v1/all-schedule?perpage=20&day=%s&type=schtml", day)
 
 	client := http.DefaultClient
 
 	resp, err := client.Get(url)
 	if err != nil {
-		return []JadwalRilis{}, err
+		return []JadwalRilisResult{}, err
 	}
 
 	if resp.StatusCode != 200 {
-		return []JadwalRilis{}, external.ErrNotFound
+		return []JadwalRilisResult{}, utility.ErrNotFound
 	}
 
 	body, _ := io.ReadAll(resp.Body)
 
 	var response []animeResponse
 	if err := json.Unmarshal(body, &response); err != nil {
-		return []JadwalRilis{}, err
+		return []JadwalRilisResult{}, err
 	}
 
-	jadwalRilis := []JadwalRilis{}
+	jadwalRilis := []JadwalRilisResult{}
 	for _, anime := range response {
 		genres := strings.Split(anime.Genre, ", ")
 
-		jadwalRilis = append(jadwalRilis, JadwalRilis{
+		jadwalRilis = append(jadwalRilis, JadwalRilisResult{
 			Thumbnail: anime.FeaturedImg,
 			Title:     anime.Title,
 			Type:      anime.Type,
@@ -45,7 +47,7 @@ func Fetch(day string) ([]JadwalRilis, error) {
 			Time:      anime.EastTime,
 			Genre:     genres,
 			Href:      anime.URL,
-			Slug:      external.ExtractSlug(anime.URL),
+			Slug:      utility.ExtractSlug(anime.URL),
 		})
 	}
 

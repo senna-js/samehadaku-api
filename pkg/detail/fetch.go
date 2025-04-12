@@ -7,31 +7,35 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/samehadaku-api/external"
+	"github.com/radenrishwan/samehadaku-api/utility"
 )
 
 var titlePrefix = "Nonton Anime "
 
-func Fetch(slug string) (Anime, error) {
-	url := external.BASE_URL + "anime/" + slug
+type Detail struct {
+	BaseUrl string
+}
+
+func (self Detail) Fetch(slug string) (DetailResult, error) {
+	url := self.BaseUrl + "anime/" + slug
 
 	client := http.DefaultClient
 
 	resp, err := client.Get(url)
 	if err != nil {
-		return Anime{}, err
+		return DetailResult{}, err
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return Anime{}, err
+		return DetailResult{}, err
 	}
 
 	if doc.Find("#infoarea > div > div.infoanime.widget_senction > h2").Text() == "" {
-		return Anime{}, external.ErrNotFound
+		return DetailResult{}, utility.ErrNotFound
 	}
 
-	anime := Anime{}
+	anime := DetailResult{}
 	anime.Title = strings.TrimPrefix(doc.Find("#infoarea > div > div.infoanime.widget_senction > h2").Text(), titlePrefix)
 	anime.Thumbnail = doc.Find("#infoarea > div > div.infoanime.widget_senction > div.thumb > img").AttrOr("src", "")
 	anime.Synopsis = doc.Find("#infoarea > div > div.infoanime.widget_senction > div.infox > div.desc > div > p").Text()
@@ -47,7 +51,7 @@ func Fetch(slug string) (Anime, error) {
 	anime.Genres = genres
 
 	anime.Href = doc.Find("#infoarea > div > div:nth-child(26) > a").AttrOr("href", "")
-	anime.EpisodeSlug = external.ExtractSlug(anime.Href)
+	anime.EpisodeSlug = utility.ExtractSlug(anime.Href)
 
 	episodes := []Episode{}
 	doc.Find("#infoarea > div > div.whites.lsteps.widget_senction > div.lstepsiode.listeps > ul > li").Each(func(i int, s *goquery.Selection) {
@@ -64,7 +68,7 @@ func Fetch(slug string) (Anime, error) {
 			Title:       right.Find("span.lchx > a").Text(),
 			ReleasedOn:  right.Find("span.date").Text(),
 			Href:        right.Find("span.lchx > a").AttrOr("href", ""),
-			EpisodeSlug: external.ExtractSlug(right.Find("span.lchx > a").AttrOr("href", "")),
+			EpisodeSlug: utility.ExtractSlug(right.Find("span.lchx > a").AttrOr("href", "")),
 		})
 	})
 

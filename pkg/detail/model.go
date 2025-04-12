@@ -1,12 +1,12 @@
 package samehadakudetail
 
-type Anime struct {
-	Thumbnail string    `json:"thumbnail"`
-	Title     string    `json:"title"`
-	Synopsis  string    `json:"synopsis"`
-	Genres    []Genre   `json:"genres"`
-	Episodes  []Episode `json:"episodes"`
-	Detail    Detail    `json:"detail"`
+type DetailResult struct {
+	Thumbnail string     `json:"thumbnail"`
+	Title     string     `json:"title"`
+	Synopsis  string     `json:"synopsis"`
+	Genres    []Genre    `json:"genres"`
+	Episodes  []Episode  `json:"episodes"`
+	Detail    MoreDetail `json:"detail"`
 	// url to newest or latest episode
 	Href        string `json:"href"`
 	EpisodeSlug string `json:"episode_slug"`
@@ -25,7 +25,7 @@ type Episode struct {
 	EpisodeSlug string `json:"episode_slug"`
 }
 
-type Detail struct {
+type MoreDetail struct {
 	Japanese     string `json:"japanese"`
 	Status       string `json:"status"`
 	Source       string `json:"source"`

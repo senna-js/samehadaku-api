@@ -1,6 +1,6 @@
 package samehadakuanimeterbaru
 
-type AnimeTerbaru struct {
+type AnimeTerbaruResult struct {
 	Page  int         `json:"page"`
 	Anime []AnimeCard `json:"anime"`
 }

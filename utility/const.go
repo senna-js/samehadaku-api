@@ -1,4 +1,4 @@
-package external
+package utility
 
 const (
 	// base url of the samehadaku website

@@ -5,25 +5,29 @@ import (
 	"strconv"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/samehadaku-api/external"
+	"github.com/radenrishwan/samehadaku-api/utility"
 )
 
-func Fetch(slug string, fetchStreamUrl bool) (Episode, error) {
-	url := external.BASE_URL + slug
+type Episode struct {
+	BaseUrl string
+}
+
+func (self Episode) Fetch(slug string, fetchStreamUrl bool) (EpisodeResult, error) {
+	url := self.BaseUrl + slug
 
 	client := http.DefaultClient
 
 	resp, err := client.Get(url)
 	if err != nil {
-		return Episode{}, err
+		return EpisodeResult{}, err
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return Episode{}, err
+		return EpisodeResult{}, err
 	}
 
-	episode := Episode{}
+	episode := EpisodeResult{}
 	episode.Title = doc.Find("div.player-area.widget_senction > header > div > h1.entry-title").Text()
 
 	episodeIndex, err := strconv.Atoi(doc.Find("div.player-area.widget_senction > header > div > div.sbdbti > span > span:nth-child(2)").Text())
@@ -51,7 +55,7 @@ func Fetch(slug string, fetchStreamUrl bool) (Episode, error) {
 	if fetchStreamUrl {
 		streamUrls := []StreamUlrl{}
 		for _, ep := range episode.Streams {
-			iframeUrl, _ := external.GetIFrameURL(url, external.IFrameBody{
+			iframeUrl, _ := utility.GetIFrameURL(url, utility.IFrameBody{
 				Post:         ep.Post,
 				ResponseType: ep.Type,
 				Nume:         ep.Nume,

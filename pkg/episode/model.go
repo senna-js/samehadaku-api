@@ -1,10 +1,10 @@
 package samehadakuepisode
 
-type Episode struct {
+type EpisodeResult struct {
 	Title       string `json:"title"`
 	Episode     int    `json:"episode"`
 	ReleaseDate string `json:"release_date"`
-	// use this data to get a iframe url using function `external.GetIframeUrl`
+	// use this data to get a iframe url using function `samehadakuapi.GetIframeUrl`
 	Streams      []Stream       `json:"stream"`
 	StreamUlrls  []StreamUlrl   `json:"stream_url,omitempty"`
 	DownloadUrls []DownloadUrls `json:"download_urls"`
@@ -12,11 +12,11 @@ type Episode struct {
 
 type Stream struct {
 	Title string `json:"title"`
-	// use `Post` to get a iframe url using function `external.GetIframeUrl`
+	// use `Post` to get a iframe url using function `samehadakuapi.GetIframeUrl`
 	Post string `json:"post"`
-	// use `Type` to get a iframe url using function `external.GetIframeUrl`
+	// use `Type` to get a iframe url using function `samehadakuapi.GetIframeUrl`
 	Type string `json:"type"`
-	// use `Nume` to get a iframe url using function `external.GetIframeUrl`
+	// use `Nume` to get a iframe url using function `samehadakuapi.GetIframeUrl`
 	Nume string `json:"nume"`
 }
 

@@ -1,6 +1,6 @@
 package samehadakuhome
 
-type Home struct {
+type HomeResult struct {
 	AnimeTerbaru   []AnimeCard        `json:"anime_terbaru"`
 	ProjectMovie   []ProjectMovieCard `json:"project_movie"`
 	DonghuaDanFilm []DonghuaDanFilm   `json:"donghua_dan_film,omitempty"`

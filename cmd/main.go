@@ -6,21 +6,18 @@ import (
 	"net/http"
 	"strconv"
 
-	samehadakuanimeterbaru "github.com/radenrishwan/samehadaku-api/external/pkg/anime-terbaru"
-	samehadakudaftaranime "github.com/radenrishwan/samehadaku-api/external/pkg/daftar-anime"
-	samehadakudetail "github.com/radenrishwan/samehadaku-api/external/pkg/detail"
-	samehadakuepisode "github.com/radenrishwan/samehadaku-api/external/pkg/episode"
-	samehadakuhome "github.com/radenrishwan/samehadaku-api/external/pkg/home"
-	samehadakujadwalrilis "github.com/radenrishwan/samehadaku-api/external/pkg/jadwal-rilis"
-	samehadakusearch "github.com/radenrishwan/samehadaku-api/external/pkg/search"
+	samehadakuapi "github.com/radenrishwan/samehadaku-api"
+	samehadakuepisode "github.com/radenrishwan/samehadaku-api/pkg/episode"
 )
 
 func main() {
 	mux := http.NewServeMux()
 	prefix := "/api/v1"
 
+	samehadaku := samehadakuapi.NewSamehadaku("")
+
 	mux.HandleFunc("GET "+prefix+"/", func(w http.ResponseWriter, r *http.Request) {
-		result, err := samehadakuhome.Fetch()
+		result, err := samehadaku.Home.Fetch()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -36,7 +33,7 @@ func main() {
 			return
 		}
 
-		result, err := samehadakudetail.Fetch(slug)
+		result, err := samehadaku.Detail.Fetch(slug)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -53,9 +50,9 @@ func main() {
 		}
 
 		streamUrls := r.URL.Query().Get("stream_urls")
-		var response samehadakuepisode.Episode
+		var response samehadakuepisode.EpisodeResult
 		if streamUrls == "1" {
-			result, err := samehadakuepisode.Fetch(slug, true)
+			result, err := samehadaku.Episode.Fetch(slug, true)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -63,7 +60,7 @@ func main() {
 
 			response = result
 		} else {
-			result, err := samehadakuepisode.Fetch(slug, false)
+			result, err := samehadaku.Episode.Fetch(slug, true)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -87,7 +84,7 @@ func main() {
 			p = -1
 		}
 
-		response, err := samehadakuanimeterbaru.Fetch(p)
+		response, err := samehadaku.AnimeTerbaru.Fetch(p)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -103,7 +100,7 @@ func main() {
 			return
 		}
 
-		response, err := samehadakujadwalrilis.Fetch(day)
+		response, err := samehadaku.JadwalRilis.Fetch(day)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -125,7 +122,7 @@ func main() {
 			isSeperate = false
 		}
 
-		response, err := samehadakudaftaranime.Fetch(isSeperate)
+		response, err := samehadaku.DaftarAnime.Fetch(isSeperate)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -141,7 +138,7 @@ func main() {
 			return
 		}
 
-		response, err := samehadakusearch.Fetch(query)
+		response, err := samehadaku.Search.Fetch(query)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
