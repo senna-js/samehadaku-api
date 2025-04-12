@@ -27,7 +27,17 @@ func NewSamehadaku(baseUrl string) *Samehadaku {
 		baseUrl = utility.BASE_URL
 	}
 
-	return &Samehadaku{
+	samehadaku := &Samehadaku{
 		BaseUrl: baseUrl,
 	}
+
+	samehadaku.AnimeTerbaru = samehadakuanimeterbaru.AnimeTerbaru{BaseUrl: baseUrl}
+	samehadaku.DaftarAnime = samehadakudaftaranime.DaftarAnime{BaseUrl: baseUrl}
+	samehadaku.Detail = samehadakudetail.Detail{BaseUrl: baseUrl}
+	samehadaku.Episode = samehadakuepisode.Episode{BaseUrl: baseUrl}
+	samehadaku.Home = samehadakuhome.Home{BaseUrl: baseUrl}
+	samehadaku.JadwalRilis = samehadakujadwalrilis.JadwalRilis{BaseUrl: baseUrl}
+	samehadaku.Search = samehadakusearch.Search{BaseUrl: baseUrl}
+
+	return samehadaku
 }
