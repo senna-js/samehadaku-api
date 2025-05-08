@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/radenrishwan/samehadaku-api/utility"
+	"github.com/senna-js/samehadaku-api/utility"
 )
 
 type JadwalRilis struct {
