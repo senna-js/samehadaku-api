@@ -1,14 +1,14 @@
 package samehadakuapi
 
 import (
-	samehadakuanimeterbaru "github.com/radenrishwan/samehadaku-api/pkg/anime-terbaru"
-	samehadakudaftaranime "github.com/radenrishwan/samehadaku-api/pkg/daftar-anime"
-	samehadakudetail "github.com/radenrishwan/samehadaku-api/pkg/detail"
-	samehadakuepisode "github.com/radenrishwan/samehadaku-api/pkg/episode"
-	samehadakuhome "github.com/radenrishwan/samehadaku-api/pkg/home"
-	samehadakujadwalrilis "github.com/radenrishwan/samehadaku-api/pkg/jadwal-rilis"
-	samehadakusearch "github.com/radenrishwan/samehadaku-api/pkg/search"
-	"github.com/radenrishwan/samehadaku-api/utility"
+	samehadakuanimeterbaru "github.com/senna-js/samehadaku-api/pkg/anime-terbaru"
+	samehadakudaftaranime "github.com/senna-js/samehadaku-api/pkg/daftar-anime"
+	samehadakudetail "github.com/senna-js/samehadaku-api/pkg/detail"
+	samehadakuepisode "github.com/senna-js/samehadaku-api/pkg/episode"
+	samehadakuhome "github.com/senna-js/samehadaku-api/pkg/home"
+	samehadakujadwalrilis "github.com/senna-js/samehadaku-api/pkg/jadwal-rilis"
+	samehadakusearch "github.com/senna-js/samehadaku-api/pkg/search"
+	"github.com/senna-js/samehadaku-api/utility"
 )
 
 type Samehadaku struct {
