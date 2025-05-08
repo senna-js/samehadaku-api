@@ -1,4 +1,4 @@
-module github.com/radenrishwan/samehadaku-api
+module github.com/senna-js/samehadaku-api
 
 go 1.23.4
 
