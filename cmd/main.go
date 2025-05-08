@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	samehadakuapi "github.com/radenrishwan/samehadaku-api"
-	samehadakuepisode "github.com/radenrishwan/samehadaku-api/pkg/episode"
+	samehadakuapi "github.com/senna-js/samehadaku-api"
+	samehadakuepisode "github.com/senna-js/samehadaku-api/pkg/episode"
 )
 
 func main() {
