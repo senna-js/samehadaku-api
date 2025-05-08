@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/radenrishwan/samehadaku-api/utility"
+	"github.com/senna-js/samehadaku-api/utility"
 )
 
 type Episode struct {
